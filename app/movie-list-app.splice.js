@@ -1,3 +1,4 @@
+// state of the app
 let favMovies = [
   {
     id: '1694415809280',
@@ -10,9 +11,9 @@ let favMovies = [
     releaseDate: '1994'
   },
   {
-    id: '1694415816450',
-    title: 'Jurassic Park',
-    releaseDate: '1995'
+    id: '1694415816448',
+    title: 'Innocense',
+    releaseDate: '1997'
   }
 ];
 
@@ -39,8 +40,9 @@ function makeMovieDiv(movie) {
   h3.innerText = movie['releaseDate']
 
   const deleteBtn = document.createElement('button');
-  deleteBtn.innerText = 'X';
+  deleteBtn.innerText = 'Delete movie';
   deleteBtn.addEventListener('click', function() {
+    // check line 26
     removeMovie(movie['id'])
   })
 
@@ -48,23 +50,7 @@ function makeMovieDiv(movie) {
   div.appendChild(h3)
   div.appendChild(deleteBtn)
 
-
   return div;
-}
-
-function removeMovie(movieId) {
-  console.log('Deleting ', movieId)
-  // const filteredArray = favMovies.filter(function(movie) {
-  //   return movie.id != movieId
-  // })
-  const filteredArray = favMovies.filter((movie) => movie.id != movieId)
-  favMovies = filteredArray;
-  updateMovieListUI()
-}
-
-function addMovie(movie) {
-  favMovies.push(movie)
-  updateMovieListUI()
 }
 
 function appendToApp(movieDiv) {
@@ -77,7 +63,21 @@ function clearApp() {
   app.innerHTML = ''
 }
 
-function updateMovieListUI() {
+function removeMovie(movieId) {
+  // const toDeleteIndex = favMovies.findIndex(function(movie) {
+  //   return movie.id == movieId
+  // })
+
+  // const toDeleteIndex = favMovies.findIndex((movie) => {
+  //   return movie.id == movieId
+  // })
+
+  const toDeleteIndex = favMovies.findIndex((movie) => movie.id == movieId)
+  favMovies.splice(toDeleteIndex, 1);
+  updateMovieListUi()
+}
+
+function updateMovieListUi() {
   clearApp()
   for(let i=0 ;i<favMovies.length; i++) {
     const movieDiv = makeMovieDiv(favMovies[i])
@@ -85,34 +85,5 @@ function updateMovieListUI() {
   }
 }
 
-function hookForm() {
-  const form = document.querySelector('#add-movie-form')
-  form.addEventListener('submit', function(e) {
-    e.preventDefault()
-    const name = document.querySelector('#movie-name').value
-    const year = document.querySelector('#movie-year').value
-
-    /**
-    {
-      id: '1694415809280',
-      title: 'Matrix',
-      releaseDate: '1998'
-    }
-    **/
-    const movie = {
-      id: new Date().getTime(),
-      title: name,
-      releaseDate: year
-    }
-    addMovie(movie);
-  })
-}
-
 // start of app
-updateMovieListUI()
-hookForm()
-
-// C - create
-// R - read
-// U
-// D - delete
+updateMovieListUi()
