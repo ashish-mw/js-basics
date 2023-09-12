@@ -1,23 +1,25 @@
-let favMovies = [
-  {
-    id: '1694415809280',
-    title: 'Matrix',
-    releaseDate: '1998',
-    isEdit: false,
-  },
-  {
-    id: '1694415816447',
-    title: 'Ghost in the Shell',
-    releaseDate: '1994',
-    isEdit: false,
-  },
-  {
-    id: '1694415816450',
-    title: 'Jurassic Park',
-    releaseDate: '1995',
-    isEdit: false,
-  }
-];
+// let favMovies = [
+//   {
+//     id: '1694415809280',
+//     title: 'Matrix',
+//     releaseDate: '1998',
+//     isEdit: false,
+//   },
+//   {
+//     id: '1694415816447',
+//     title: 'Ghost in the Shell',
+//     releaseDate: '1994',
+//     isEdit: false,
+//   },
+//   {
+//     id: '1694415816450',
+//     title: 'Jurassic Park',
+//     releaseDate: '1995',
+//     isEdit: false,
+//   }
+// ];
+
+let favMovies = []
 
 /**
  * <div class="movie-card">
@@ -142,6 +144,7 @@ function editMovie(movieId) {
 function addMovie(movie) {
   favMovies.push(movie)
   updateMovieListUI()
+  saveToLocalStorage()
 }
 
 function appendToApp(movieDiv) {
@@ -179,17 +182,33 @@ function hookForm() {
     const movie = {
       id: new Date().getTime(),
       title: name,
-      releaseDate: year
+      releaseDate: year,
+      isEdit: false
     }
     addMovie(movie);
   })
 }
 
+function saveToLocalStorage() {
+  const str = JSON.stringify(favMovies)
+  localStorage.setItem('my-movie-list', str)
+}
+
+function getFromLocalStorage() {
+  const str = localStorage.getItem('my-movie-list')
+  if (!str) {
+    favMovies =  []
+  } else {
+    favMovies = JSON.parse(str)
+  }
+}
+
 // start of app
+getFromLocalStorage()
 updateMovieListUI()
 hookForm()
 
 // C - create
 // R - read
-// U
+// U - update
 // D - delete
